@@ -1,0 +1,69 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\newcommand{\graphorplaceholder}[1]{%
+	\IfFileExists{#1}{\includegraphics[width=.47\linewidth]{#1}}{\fbox{\parbox[c][4.2cm][c]{.43\linewidth}{\centering Inserir gráfico\\\texttt{\detokenize{#1}}}}}%
+}
+
+\title{\vspace{-1.4cm}Trabalho 1 -- Paralelização do Mandelbrot com OpenMP\vspace{-0.5cm}}
+\author{Integrante 1 \and Integrante 2 \and Integrante 3}
+\date{\vspace{-0.7cm}Setembro de 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Repositório e commit:} \texttt{[inserir link público e hash]}. O código foi desenvolvido com auxílio do GitHub Copilot para estruturar a versão C. Originalmente o código foi feito por um integrante em rust previamente, a IA ajudou a converter para C \texttt{https://github.com/fHaggs/mandelbrot}, a instrumentação e este rascunho; o grupo revisou e deve conseguir explicar cada decisão.
+
+\section{Problema e potencial de paralelização}
+Calculamos uma imagem do conjunto de Mandelbrot. Para cada pixel $(x,y)$, iteramos $z_{k+1}=z_k^2+c$ até $|z_k|^2\ge4$ ou o limite de 500 iterações. O resultado de um pixel não altera nenhum outro; escolhemos as linhas como unidade de trabalho. A entrada de referência é 1280$\times$720, 500 iterações máximas e [\,N\,] quadros, dimensionada para aproximadamente 30--60 s na medição sequencial.
+
+O perfil sequencial com \texttt{perf} sobre a mesma região medida indicou que \texttt{mandelbrot\_iterations}/\texttt{render\_row} consome [\,f\,]\% do tempo. Assim, para $P=[\,\,]$ threads, o limite de Amdahl é $S_{max}(P)=1/((1-f)+f/P)=[\,\,]$; o limite assintótico é $1/(1-f)=[\,\,]$. Partes de janela e CSV ficaram fora tanto do perfil como da medição.
+
+\section{Modelagem e diretivas}
+Em \texttt{mandelbrot.c}, \texttt{render\_image} cria uma região \texttt{\#pragma omp parallel}; o \texttt{\#pragma omp for schedule(runtime)} distribui as linhas. Cada thread escreve pixels exclusivos, portanto não há seção crítica. As somas de iterações são locais e unidas por \texttt{reduction(+:total\_iterations)}. A cláusula \texttt{default(none)} obriga declarar explicitamente os dados compartilhados. O caminho \texttt{seq} usa os mesmos cálculos sem diretivas e é a referência $T_1$.
+
+As linhas têm o mesmo número de pixels, mas não necessariamente o mesmo custo: regiões internas ao conjunto atingem o máximo de iterações. Medimos \texttt{static}, \texttt{dynamic} e/ou \texttt{guided} com \texttt{--thread-stats}; [justificar a escolha final com os dados].
+
+\section{Ambiente e método}
+Máquina: [modelo, frequência], [núcleos físicos] núcleos físicos e [lógicos] processadores lógicos, L3 de [\,\,] e [\,\,] RAM. Sistema: [versão]. Compilador: GCC [versão], flags \texttt{-O3 -march=native -fopenmp}. Fixamos as threads com \texttt{OMP\_NUM\_THREADS}. A região medida por \texttt{omp\_get\_wtime()} inclui o cálculo e colorização completos e exclui X11, espera e CSV. Cada configuração foi executada dez vezes; a tabela informa mediana, mínimo e máximo.
+
+\begin{table}[h]
+\centering\small
+\caption{Escalabilidade forte: entrada fixa [descrever].}
+\begin{tabular}{rrrrr}\toprule
+$P$ & mediana (s) & mínimo & máximo & $S_P$ / $E_P$\\\midrule
+1 & [ ] & [ ] & [ ] & 1.00 / 1.00\\
+2 & [ ] & [ ] & [ ] & [ ] / [ ]\\
+4 & [ ] & [ ] & [ ] & [ ] / [ ]\\
+\multicolumn{5}{c}{[inserir demais linhas]}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering\small
+\caption{Escalabilidade fraca. A largura cresce como $1280P$.}
+\begin{tabular}{rrrrr}\toprule
+$P$ & resolução & mediana (s) & mínimo / máximo & $E_{fraca}$\\\midrule
+1 & 1280$\times$720 & [ ] & [ ] / [ ] & 1.00\\
+2 & 2560$\times$720 & [ ] & [ ] / [ ] & [ ]\\
+4 & 5120$\times$720 & [ ] & [ ] / [ ] & [ ]\\
+\multicolumn{5}{c}{[inserir demais linhas]}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Resultados e análise}
+\begin{figure}[h]
+\centering
+\graphorplaceholder{strong_speedup.pdf}\hfill
+\graphorplaceholder{efficiency.pdf}
+\caption{À esquerda, speed-up forte e ideal. À direita, eficiência forte e fraca.}
+\end{figure}
+Na Figura 1, o speed-up [cresce/satura] a partir de [\,P\,] porque [relacionar aos dados: fração sequencial, overhead, desbalanceamento e memória]. A eficiência [\,\,]. Há [quatro] núcleos físicos e [oito] processadores lógicos; portanto, a faixa após [4] threads usa SMT. Observamos [efeito mensurado do SMT]. A escalabilidade fraca [se sustenta/não se sustenta] melhor porque [causa baseada na curva]. Os resultados [ficam abaixo/acompanham] o limite de Amdahl por [causa].
+
+\end{document}
