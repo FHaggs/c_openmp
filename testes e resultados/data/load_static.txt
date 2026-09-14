@@ -1,0 +1,89 @@
+=== P=2 static ===
+frame=0 mode=omp threads=2 time=25.883004 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=11213851971
+  thread=1 iterations=6355109687
+=== P=4 static ===
+frame=0 mode=omp threads=4 time=19.322802 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=2928038712
+  thread=1 iterations=8285813259
+  thread=2 iterations=5895105173
+  thread=3 iterations=460004514
+=== P=6 static ===
+frame=0 mode=omp threads=6 time=14.239780 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=1204577409
+  thread=1 iterations=3962434676
+  thread=2 iterations=6046839886
+  thread=3 iterations=4478283582
+  thread=4 iterations=1771552913
+  thread=5 iterations=105273192
+=== P=8 static ===
+frame=0 mode=omp threads=8 time=10.965494 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=521620346
+  thread=1 iterations=2406418366
+  thread=2 iterations=3672986366
+  thread=3 iterations=4612826893
+  thread=4 iterations=3577707763
+  thread=5 iterations=2317397410
+  thread=6 iterations=451521656
+  thread=7 iterations=8482858
+=== P=10 static ===
+frame=0 mode=omp threads=10 time=8.932887 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=346251276
+  thread=1 iterations=1495216352
+  thread=2 iterations=2315820494
+  thread=3 iterations=3342346162
+  thread=4 iterations=3714217687
+  thread=5 iterations=2979839764
+  thread=6 iterations=2136529334
+  thread=7 iterations=987549211
+  thread=8 iterations=249429053
+  thread=9 iterations=1762325
+=== P=12 static ===
+frame=0 mode=omp threads=12 time=7.522108 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=297991644
+  thread=1 iterations=906585765
+  thread=2 iterations=1723461303
+  thread=3 iterations=2238973373
+  thread=4 iterations=2954094988
+  thread=5 iterations=3092744898
+  thread=6 iterations=2576299438
+  thread=7 iterations=1901984144
+  thread=8 iterations=1416821591
+  thread=9 iterations=354731322
+  thread=10 iterations=103649595
+  thread=11 iterations=1623597
+=== P=14 static ===
+frame=0 mode=omp threads=14 time=6.509033 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=254409136
+  thread=1 iterations=537301248
+  thread=2 iterations=1396096720
+  thread=3 iterations=1686682961
+  thread=4 iterations=2236442397
+  thread=5 iterations=2647371826
+  thread=6 iterations=2602289399
+  thread=7 iterations=2224746494
+  thread=8 iterations=1667083010
+  thread=9 iterations=1392891444
+  thread=10 iterations=620755763
+  thread=11 iterations=279407810
+  thread=12 iterations=21897713
+  thread=13 iterations=1585737
+=== P=16 static ===
+frame=0 mode=omp threads=16 time=5.870253 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=212495352
+  thread=1 iterations=309124994
+  thread=2 iterations=1079621964
+  thread=3 iterations=1326796402
+  thread=4 iterations=1576725785
+  thread=5 iterations=2096260581
+  thread=6 iterations=2318849889
+  thread=7 iterations=2293977004
+  thread=8 iterations=2047581213
+  thread=9 iterations=1530126550
+  thread=10 iterations=1300817370
+  thread=11 iterations=1016580040
+  thread=12 iterations=264184169
+  thread=13 iterations=187337487
+  thread=14 iterations=7184191
+  thread=15 iterations=1298667
+FIM-LOAD

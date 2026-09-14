@@ -1,0 +1,11 @@
+# Binario compilado (reconstruido com "make")
+/mandelbrot
+
+# Saida bruta do perf record: ~12 MB e nao e necessaria para reproduzir.
+# O relatorio usa data/perf_seq.txt, que e versionado.
+testes e resultados/data/perf.data
+
+# Intermediarios do LaTeX
+*.aux
+*.log
+*.out

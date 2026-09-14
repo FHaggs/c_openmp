@@ -1,0 +1,36 @@
+--- static ---
+frame=0 mode=omp threads=16 time=5.920758 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=212495352
+  thread=1 iterations=309124994
+  thread=2 iterations=1079621964
+  thread=3 iterations=1326796402
+  thread=4 iterations=1576725785
+  thread=5 iterations=2096260581
+  thread=6 iterations=2318849889
+  thread=7 iterations=2293977004
+  thread=8 iterations=2047581213
+  thread=9 iterations=1530126550
+  thread=10 iterations=1300817370
+  thread=11 iterations=1016580040
+  thread=12 iterations=264184169
+  thread=13 iterations=187337487
+  thread=14 iterations=7184191
+  thread=15 iterations=1298667
+--- dynamic, chunk 1 ---
+frame=0 mode=omp threads=16 time=3.143046 s iterations=17568961658 checksum=79135e044bbda3b3
+  thread=0 iterations=1099052270
+  thread=1 iterations=1098286710
+  thread=2 iterations=1098706527
+  thread=3 iterations=1099585960
+  thread=4 iterations=1095229869
+  thread=5 iterations=1096893745
+  thread=6 iterations=1098979638
+  thread=7 iterations=1091909684
+  thread=8 iterations=1099317890
+  thread=9 iterations=1099512688
+  thread=10 iterations=1096621084
+  thread=11 iterations=1099141139
+  thread=12 iterations=1099190103
+  thread=13 iterations=1099327652
+  thread=14 iterations=1099172005
+  thread=15 iterations=1098034694

@@ -2,6 +2,10 @@ CC := gcc
 CFLAGS := -std=c17 -O3 -march=native -Wall -Wextra -Wpedantic -fopenmp
 LDLIBS := -lX11
 TARGET := mandelbrot
+# Entrada de referencia calibrada para ~40 s no caminho sequencial desta
+# maquina (faixa 30-60 s pedida no enunciado). Comentario em linha propria
+# porque o Make preservaria os espacos antes do '#' dentro do valor.
+MAXITER ?= 87230
 
 .PHONY: all clean run benchmark profile
 
@@ -13,19 +17,16 @@ $(TARGET): mandelbrot.c
 run: $(TARGET)
 	./$(TARGET) --frames 2000
 
-# Cada chamada gera 10 tempos brutos, sem o custo da interface grafica.
+# A bateria de medicao mora em "testes e resultados/bench.sh", que fixa
+# OMP_NUM_THREADS, faz as 10 repeticoes exigidas e grava os tempos brutos.
+# Os alvos abaixo so delegam; nao meca chamando o binario direto sem --max-iter,
+# porque o padrao 500 roda em fracao de segundo e nao serve de medicao.
 benchmark: $(TARGET)
-	mkdir -p data
-	./$(TARGET) --mode seq --no-window --frames 10 --csv data/strong_seq.csv
-	OMP_NUM_THREADS=2 ./$(TARGET) --mode omp --no-window --frames 10 --csv data/strong_2.csv
-	OMP_NUM_THREADS=4 ./$(TARGET) --mode omp --no-window --frames 10 --csv data/strong_4.csv
-	OMP_NUM_THREADS=6 ./$(TARGET) --mode omp --no-window --frames 10 --csv data/strong_6.csv
-	OMP_NUM_THREADS=8 ./$(TARGET) --mode omp --no-window --frames 10 --csv data/strong_8.csv
+	cd "testes e resultados" && MAXITER=$(MAXITER) ./bench.sh all
 
-# Perfil da mesma regiao computacional da medicao; nao use os dados deste alvo como tempos finais.
+# Perfil do caminho sequencial na MESMA entrada usada no speed-up.
 profile: $(TARGET)
-	perf record -g ./$(TARGET) --mode seq --no-window --frames 10
-	perf report
+	cd "testes e resultados" && MAXITER=$(MAXITER) ./bench.sh perfil
 
 clean:
 	rm -f $(TARGET)

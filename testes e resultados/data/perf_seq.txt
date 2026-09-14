@@ -1,0 +1,31 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 162K of event 'cpu/cycles/P'
+# Event count (approx.): 178773813350
+#
+# Children      Self  Command     Shared Object         Symbol                                   
+# ........  ........  ..........  ....................  .........................................
+#
+   100.00%     0.00%  mandelbrot  libc.so.6             [.] __libc_start_call_main
+   100.00%     0.00%  mandelbrot  libc.so.6             [.] __libc_start_main@@GLIBC_2.34
+   100.00%     0.00%  mandelbrot  mandelbrot            [.] _start
+   100.00%    99.92%  mandelbrot  mandelbrot            [.] render_row
+     0.06%     0.00%  mandelbrot  [kernel.kallsyms]     [.] asm_sysvec_apic_timer_interrupt
+     0.06%     0.00%  mandelbrot  [kernel.kallsyms]     [.] sysvec_apic_timer_interrupt
+     0.05%     0.00%  mandelbrot  [kernel.kallsyms]     [.] __sysvec_apic_timer_interrupt
+     0.05%     0.00%  mandelbrot  [kernel.kallsyms]     [.] hrtimer_interrupt
+     0.04%     0.00%  mandelbrot  [kernel.kallsyms]     [.] __hrtimer_run_queues
+     0.04%     0.00%  mandelbrot  [kernel.kallsyms]     [.] tick_nohz_handler
+     0.03%     0.00%  mandelbrot  [kernel.kallsyms]     [.] update_process_times
+     0.02%     0.00%  mandelbrot  [kernel.kallsyms]     [.] sched_tick
+     0.01%     0.00%  mandelbrot  [kernel.kallsyms]     [.] task_tick_fair
+     0.01%     0.01%  mandelbrot  [kernel.kallsyms]     [.] nohz_balancer_kick
+     0.01%     0.00%  mandelbrot  [kernel.kallsyms]     [.] __irq_exit_rcu
+
+
+#
+# (Tip: To change sampling frequency to 100 Hz: perf record -F 100)
+#
