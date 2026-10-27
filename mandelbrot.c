@@ -2,13 +2,13 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
-#include <omp.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <mpi.h>
 
 enum { DEFAULT_WIDTH = 1280, DEFAULT_HEIGHT = 720, DEFAULT_MAX_ITER = 500 };
 
@@ -143,23 +143,25 @@ static uint64_t render_row(uint32_t *pixels, int y, const Options *options, doub
     return total_iterations;
 }
 
+// Master
+
+
+// Slave
+
 static RenderResult render_image(uint32_t *pixels, const Options *options, double scale, uint64_t *per_thread) {
     uint64_t total_iterations = 0;
 
-    if (options->mode == MODE_SEQUENTIAL) {
-        for (int y = 0; y < options->height; ++y) total_iterations += render_row(pixels, y, options, scale);
-    } else {
-        #pragma omp parallel default(none) shared(pixels, options, scale, per_thread) reduction(+:total_iterations)
-        {
-            int thread_id = omp_get_thread_num();
-            uint64_t local_iterations = 0;
-            #pragma omp for schedule(runtime)
-            for (int y = 0; y < options->height; ++y) {
-                local_iterations += render_row(pixels, y, options, scale);
-            }
-            if (per_thread != NULL) per_thread[thread_id] = local_iterations;
-            total_iterations += local_iterations;
+
+    #pragma omp parallel default(none) shared(pixels, options, scale, per_thread) reduction(+:total_iterations)
+    {
+        int thread_id = omp_get_thread_num();
+        uint64_t local_iterations = 0;
+        #pragma omp for schedule(runtime)
+        for (int y = 0; y < options->height; ++y) {
+            local_iterations += render_row(pixels, y, options, scale);
         }
+        if (per_thread != NULL) per_thread[thread_id] = local_iterations;
+        total_iterations += local_iterations;
     }
 
     uint64_t checksum = 1469598103934665603ULL;
